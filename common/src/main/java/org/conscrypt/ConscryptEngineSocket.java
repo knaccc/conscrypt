@@ -465,6 +465,14 @@ class ConscryptEngineSocket extends OpenSSLSocketImpl implements SSLParametersIm
                 engine.closeOutbound();
             }
         } finally {
+
+            try {
+                // closeAndFreeResources() call, just in case the engine.closeOutbound() call above failed to do so
+                engine.closeAndFreeResources();
+            }
+            catch (Exception e) {
+            }
+
             // In case of an exception thrown while closing the engine, we still need to close the
             // underlying socket and release any resources the input stream is holding.
             try {

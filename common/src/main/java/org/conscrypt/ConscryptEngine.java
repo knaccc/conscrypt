@@ -1671,7 +1671,7 @@ final class ConscryptEngine extends AbstractConscryptEngine implements NativeCry
         }
     }
 
-    private void closeAndFreeResources() {
+    public void closeAndFreeResources() {
         transitionTo(STATE_CLOSED);
         if (!ssl.isClosed()) {
             ssl.close();
@@ -1683,6 +1683,7 @@ final class ConscryptEngine extends AbstractConscryptEngine implements NativeCry
     protected void finalize() throws Throwable {
         try {
             transitionTo(STATE_CLOSED);
+            closeAndFreeResources();
         } finally {
             super.finalize();
         }
